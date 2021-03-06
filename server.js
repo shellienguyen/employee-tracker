@@ -1,11 +1,10 @@
 // Import dependencies.
 const express = require( 'express' );
-const PORT = process.env.PORT || 3005;
-const mySqlConnection = require( './utils/mySqlConnection' );
+const PORT = process.env.PORT || 3306;
+const mySqlConnection = require( './db/database' );
 const app = express();
 const morganLogger = require( 'morgan' );
 const inputCheck = require( './utils/inputCheck' );
-const db = require( './db/database' );
 
 // Don't have to specify index.js in the path as Node.js will
 // automatically look for an index.js.
@@ -24,19 +23,19 @@ app.use( morganLogger( 'dev' ));
 
 
 // Connect to the MySQL database.
-/* mySqlConnection.connect( err => {
+mySqlConnection.connect( err => {
    if ( err ) throw err;
    
    console.log( 'Connected as id ' + mySqlConnection.threadId + '\n' );
    
    // Call function to display prompts here
- }); */
+});
 
 
 /* app.get( '/', (req, res) => {
-   res.send('Hello World!');
+   res.send( 'Hello World!' );
 });
 
 app.listen( 3005, () => {
-   console.log('Example app listening on port 3005!');
+   console.log( 'Example app listening on port 3005!' );
 }); */

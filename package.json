@@ -5,8 +5,6 @@
   "main": "server.js",
   "scripts": {
     "test": "jest",
-    "migrate": "sqlite3 db/election.db < db/schema.sql",
-    "seed": "sqlite3 db/election.db < db/seeds.sql",
     "db": "sqlites3 db/election.db",
     "dev": "nodemon server.js",
     "start": "node server.js"

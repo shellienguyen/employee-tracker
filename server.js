@@ -1,6 +1,7 @@
 // Import dependencies.
 const express = require( 'express' );
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3005;
+const mySqlConnection = require( './utils/mySqlConnection' );
 const app = express();
 const morganLogger = require( 'morgan' );
 const inputCheck = require( './utils/inputCheck' );
@@ -17,6 +18,25 @@ app.use( express.json());
 // Setup morgan middleware to log HTTP requests and errors.
 app.use( morganLogger( 'dev' ));
 
-app.use( '/api', apiRoutes );
+//app.use( '/api', apiRoutes );
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+// Connect to the MySQL database.
+/* mySqlConnection.connect( err => {
+   if ( err ) throw err;
+   
+   console.log( 'Connected as id ' + mySqlConnection.threadId + '\n' );
+   
+   // Call function to display prompts here
+ }); */
+
+
+/* app.get( '/', (req, res) => {
+   res.send('Hello World!');
+});
+
+app.listen( 3005, () => {
+   console.log('Example app listening on port 3005!');
+}); */

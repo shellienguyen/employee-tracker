@@ -1,16 +1,10 @@
 // Import dependencies.
 const express = require( 'express' );
 const inquirer = require('inquirer');
-const PORT = process.env.PORT || 3306;
 const mySqlConnection = require( './db/db-connection' );
 const app = express();
 const morganLogger = require( 'morgan' );
-const inputCheck = require( './utils/inputCheck' );
 const consTable = require( 'console.table' );
-
-// Don't have to specify index.js in the path as Node.js will
-// automatically look for an index.js.
-const apiRoutes = require( './routes/apiRoutes' );
 
 // Import query functions
 const {
@@ -154,7 +148,10 @@ const baseOptionsPrompts = async () => {
          departmentMenuOptions();
          break;
       case 'View All Roles':
-         break;
+         const showAllRoles = await viewAllRoles();
+         console.table( showAllRoles );
+
+         return baseOptionsPrompts();
       case 'View Employee Data':
          employeeMenuOptions();
          break;

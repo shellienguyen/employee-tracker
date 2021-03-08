@@ -19,6 +19,8 @@ const {
    viewEmployeesByRole,
    viewAllManagers,
    viewEmployeesByManager,
+   viewAllDepartments,
+   calcDepartmentBudget,
    updateEmployeeRole,
    updateEmployeeManager,
    addAnEmployee,
@@ -36,6 +38,10 @@ const {
    showListOfRoles,
    showListOfManagers
  } = require( './lib/role-menu-prompts' );
+const {
+   departmentMenuPrompts,
+   showListOfDepartments
+ } = require( './lib/department-menu-prompts' );
 
 // Setup Express middleware to json parse and urlendoded for POST requests.
 app.use( express.urlencoded({ extended: false }));
@@ -47,6 +53,44 @@ app.use( morganLogger( 'dev' ));
 //app.use( '/api', apiRoutes );
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+const viewADepartmentBudget = async () => {
+   const showAllDepartments = await viewAllDepartments();
+   const listOfDepartments = await showListOfDepartments( showAllDepartments );
+
+   let departmentListPrompt = [
+      {
+         type: 'list',
+         name: 'departmentListOptions',
+         message: `Choose a department:`,
+         choices: listOfDepartments
+      }
+   ];
+
+   const { departmentListOptions: departmentOptionSelected } = await inquirer.prompt( departmentListPrompt );
+   const departmentBudget = await calcDepartmentBudget( departmentOptionSelected );
+
+   console.table( departmentBudget );
+   return baseOptionsPrompts();
+};
+
+
+const departmentMenuOptions = async () => {
+   const { departmentMenuOptions: departmentOptionSelected } = await inquirer.prompt( departmentMenuPrompts );
+
+   switch ( departmentOptionSelected ) {
+      case 'View All Departments':
+         const showAllDepartments = await viewAllDepartments();
+         console.table( showAllDepartments );
+
+         return baseOptionsPrompts();
+      case 'View Department Budget':
+         viewADepartmentBudget();
+      default:
+         return;
+   };
+};
 
 
 const employeeMenuOptions = async () => {
@@ -97,7 +141,7 @@ const employeeMenuOptions = async () => {
 
          return baseOptionsPrompts();
       default:
-         break;
+         return;
    };
 };
 
@@ -106,11 +150,12 @@ const baseOptionsPrompts = async () => {
    const { baseMenuOptions: basebaseOptionSelected } = await inquirer.prompt( baseMenuPrompts );
 
    switch ( basebaseOptionSelected ){
-      case 'View All Departments':
+      case 'View Department Data':
+         departmentMenuOptions();
          break;
       case 'View All Roles':
          break;
-      case 'View Employees':
+      case 'View Employee Data':
          employeeMenuOptions();
          break;
       case 'Add a Department':
@@ -121,7 +166,7 @@ const baseOptionsPrompts = async () => {
          break;
       case 'Update an Employee Role':
          break;
-      case 'Exit':
+      case '** Exit':
          mySqlConnection.end();
          break;
       default:

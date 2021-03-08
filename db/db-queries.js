@@ -1,3 +1,5 @@
+const { resolve } = require('path');
+const { connect } = require('./db-connection');
 const connection = require( './db-connection' );
 
 
@@ -109,6 +111,43 @@ const viewEmployeesByManager = ( managerToView ) => {
          };
 
          resolve( employeesByManagerResult );
+      });
+   });
+};
+
+
+// View all departments
+const viewAllDepartments = () => {
+   return new Promise(( resolve, reject ) => {
+      sql = `SELECT * FROM department`;
+      queryAllDepartments = connection.query( sql, ( err, allDepartmentResult ) => {
+         if ( err ) {
+            console.error( err );
+            reject( err );
+            return;
+         };
+
+         resolve( allDepartmentResult );
+      });
+   });
+};
+
+
+const calcDepartmentBudget = ( departmentId ) => {
+   return new Promise(( resolve, reject ) => {
+      sql = `SELECT SUM( role.salary ) AS departmentSalarySum
+             FROM role
+             RIGHT JOIN employees ON employees.roleId = role.id
+             LEFT JOIN department ON role.departmentId = department.id
+             WHERE department.id = ?`;
+      const queryDepartmentBudget = connection.query( sql, [ departmentId ], ( err, budgetResult ) => {
+         if ( err ) {
+            console.error( err );
+            reject( err );
+            return;
+         };
+
+         resolve( budgetResult );
       });
    });
 };
@@ -255,6 +294,8 @@ const addDepartment = ( departmentId ) => {
    viewEmployeesByRole,
    viewAllManagers,
    viewEmployeesByManager,
+   viewAllDepartments,
+   calcDepartmentBudget,
    updateEmployeeRole,
    updateEmployeeManager,
    addAnEmployee,

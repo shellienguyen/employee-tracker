@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const mySqlConnection = require( './db/db-connection' );
 const app = express();
 const morganLogger = require( 'morgan' );
-const consTable = require( 'console.table' );
+//const consTable = require( 'console.table' );
 
 // Import query functions
 const {
@@ -15,36 +15,44 @@ const {
    viewEmployeesByManager,
    viewAllDepartments,
    calcDepartmentBudget,
+   addDepartment,
+   addNewRole,
+   addAnEmployee,
    updateEmployeeRole,
    updateEmployeeManager,
-   addAnEmployee,
    deleteAnEmployee,
-   addNewRole,
    deleteARole,
-   deleteDepartment,
-   addDepartment
+   deleteDepartment
  } = require ( './db/db-queries' );
 
 // Import prompts
-const baseMenuPrompts = require( './lib/base-menu-prompts' );
+const {
+   baseMenuPrompts,
+   addDataMenuPrompts
+ } = require( './lib/base-menu-prompts' );
+
 const employeeMenuPrompts = require( './lib/employee-menu-prompts' );
+
 const {
    showListOfRoles,
    showListOfManagers
  } = require( './lib/role-menu-prompts' );
+
 const {
    departmentMenuPrompts,
+   addADepartmentPrompts,
    showListOfDepartments
  } = require( './lib/department-menu-prompts' );
-
+ 
+const { async } = require('rxjs');
+ 
 // Setup Express middleware to json parse and urlendoded for POST requests.
-app.use( express.urlencoded({ extended: false }));
-app.use( express.json());
+// app.use( express.urlencoded({ extended: false }));
+// app.use( express.json());
 
 // Setup morgan middleware to log HTTP requests and errors.
 app.use( morganLogger( 'dev' ));
 
-//app.use( '/api', apiRoutes );
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -88,6 +96,7 @@ const departmentMenuOptions = async () => {
 
 
 const employeeMenuOptions = async () => {
+   
    const { employeeMenuOptions: employeeOptionSelected } = await inquirer.prompt( employeeMenuPrompts );
 
    switch( employeeOptionSelected ) {
@@ -140,10 +149,41 @@ const employeeMenuOptions = async () => {
 };
 
 
-const baseOptionsPrompts = async () => {
-   const { baseMenuOptions: basebaseOptionSelected } = await inquirer.prompt( baseMenuPrompts );
+const addADepartment = async () => {
+   const {newDepartmentName: newDepartmentToAdd } = await inquirer.prompt( addADepartmentPrompts );
 
-   switch ( basebaseOptionSelected ){
+   addDepartment( newDepartmentToAdd );
+
+   console.log( '***********************************************' );
+   console.log( '* The new department is added to the database *' );
+   console.log( '***********************************************' );
+
+   return baseOptionsPrompts();
+};
+
+
+const addDataMenuOptions = async () => {
+
+   const { addMenuOptions: addDataOptionSelected } = await inquirer.prompt( addDataMenuPrompts );
+
+   switch ( addDataOptionSelected ) {  
+      case 'Add a Department':
+         addADepartment();
+         break;
+      case 'Add a Role':
+         break;
+      case 'Add an Employee':
+         break;
+      default:
+         break;
+   };
+};
+
+
+const baseOptionsPrompts = async () => {
+   const { baseMenuOptions: baseOptionSelected } = await inquirer.prompt( baseMenuPrompts );
+
+   switch ( baseOptionSelected ){
       case 'View Department Data':
          departmentMenuOptions();
          break;
@@ -155,15 +195,12 @@ const baseOptionsPrompts = async () => {
       case 'View Employee Data':
          employeeMenuOptions();
          break;
-      case 'Add a Department':
-         break;
-      case 'Add a Role':
-         break;
-      case 'Add an Employee':
+      case 'Add Data':
+         addDataMenuOptions();
          break;
       case 'Update an Employee Role':
          break;
-      case '** Exit':
+      case '** Exit **':
          mySqlConnection.end();
          break;
       default:

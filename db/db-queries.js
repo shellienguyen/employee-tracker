@@ -153,6 +153,57 @@ const calcDepartmentBudget = ( departmentId ) => {
 };
 
 
+// ADd a new department to the department table.
+const addDepartment = ( departmentId ) => {
+   return new Promise(( resolve, reject ) => {
+      const sql = `INSERT INTO department ( name ) VALUEs( ? )`;
+      const queryAddDepartment = connection.query( sql, [ departmentId ], ( err, addResult ) => {
+         if ( err ) {
+            console.error( err );
+            reject( err );
+            return;
+         };
+
+         resolve( addResult );
+      });
+   });
+};
+
+
+// Add a new role to the role table
+const addNewRole = ( newRoleToAdd ) => {
+   return new Promise(( resolve, reject ) => {
+      const sql = `INSERT INTO role set ?`;
+      const queryAddNewRole = connection.query( sql, [ newRoleToAdd ], ( err, newRoleResult ) => {
+         if ( err ) {
+            console.error( err );
+            reject( err );
+            return;
+         };
+
+         resolve( newRoleResult );
+      });
+   });
+};
+
+
+// Add a new employee to the database.
+const addAnEmployee = ( employeeToAdd ) => {
+   return new Promise(( resolve, reject ) => {
+      const ql = `INSERT INTO employees SET ?`;
+      const queryAddAnEmployee = connection.query( sql, [ employeeToAdd ], ( err, newEmployeeResult ) => {
+         if ( err ) {
+            console.error( err );
+            reject( err );
+            return;
+         };
+
+         resolve( newEmployeeResult );
+      });
+   });
+};
+
+
 // Update an employee's role
 const updateEmployeeRole = ( roleToUpdate, employeeToUpdate ) => {
    return new Promise(( resolve, reject ) => {
@@ -187,23 +238,6 @@ const updateEmployeeManager = ( managerToUpdate, employeeToUpdate ) => {
 };
 
 
-// Add a new employee to the database.
-const addAnEmployee = ( employeeToAdd ) => {
-   return new Promise(( resolve, reject ) => {
-      const ql = `INSERT INTO employees SET ?`;
-      const queryAddAnEmployee = connection.query( sql, [ employeeToAdd ], ( err, newEmployeeResult ) => {
-         if ( err ) {
-            console.error( err );
-            reject( err );
-            return;
-         };
-
-         resolve( newEmployeeResult );
-      });
-   });
-};
-
-
 // Delete an employee from the database.
 const deleteAnEmployee = ( id ) => {
    return new Promise(( resolve, reject ) => {
@@ -216,23 +250,6 @@ const deleteAnEmployee = ( id ) => {
          };
 
          resolve( deleteResult );
-      });
-   });
-};
-
-
-// Add a new role to the role table
-const addNewRole = ( newRoleToAdd ) => {
-   return new Promise(( resolve, reject ) => {
-      const sql = `INSERT INTO role set ?`;
-      const queryAddNewRole = connection.query( sql, [ newRoleToAdd ], ( err, newRoleResult ) => {
-         if ( err ) {
-            console.error( err );
-            reject( err );
-            return;
-         };
-
-         resolve( newRoleResult );
       });
    });
 };
@@ -271,23 +288,6 @@ const deleteDepartment = ( departmentId ) => {
 };
 
 
-// ADd a new department to the department table.
-const addDepartment = ( departmentId ) => {
-   return new Promise(( resolve, reject ) => {
-      const sql = `INSERT INTO department SET ?`;
-      const queryAddDepartment = connection.query( sql, [ departmentId ], ( err, addResult ) => {
-         if ( err ) {
-            console.error( err );
-            reject( err );
-            return;
-         };
-
-         resolve( addResult );
-      });
-   });
-};
-
-
  module.exports = {
    viewAllEmployees,
    viewAllRoles,
@@ -296,12 +296,12 @@ const addDepartment = ( departmentId ) => {
    viewEmployeesByManager,
    viewAllDepartments,
    calcDepartmentBudget,
+   addDepartment,
+   addNewRole,
+   addAnEmployee,
    updateEmployeeRole,
    updateEmployeeManager,
-   addAnEmployee,
    deleteAnEmployee,
-   addNewRole,
    deleteARole,
    deleteDepartment,
-   addDepartment
  };

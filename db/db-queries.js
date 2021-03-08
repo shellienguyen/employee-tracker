@@ -175,7 +175,9 @@ const addNewRole = ( newRoleToAdd ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `INSERT INTO role ( title, salary, departmentId )
                    VALUES ( ?, ?, ? )`;
-      const params = [ newRoleToAdd.newRoleTitle, newRoleToAdd.newRoleSalary, newRoleToAdd.newRoleDepartment ];
+      const params = [ newRoleToAdd.newRoleTitle,
+                       newRoleToAdd.newRoleSalary,
+                       newRoleToAdd.newRoleDepartment ];
       const queryAddNewRole = connection.query( sql, params, ( err, newRoleResult ) => {
          if ( err ) {
             console.error( err );
@@ -192,8 +194,13 @@ const addNewRole = ( newRoleToAdd ) => {
 // Add a new employee to the database.
 const addAnEmployee = ( employeeToAdd ) => {
    return new Promise(( resolve, reject ) => {
-      const ql = `INSERT INTO employees SET ?`;
-      const queryAddAnEmployee = connection.query( sql, [ employeeToAdd ], ( err, newEmployeeResult ) => {
+      const sql = `INSERT INTO employees ( firstName, lastName, roleId, ManagerId )
+                   VALUES (?, ?, ?, ? )`;
+      const params = [ employeeToAdd.newEmployeeFirstName,
+                       employeeToAdd.newEmployeeLastName,
+                       employeeToAdd.roleId,
+                       employeeToAdd.managerId ];
+      const queryAddAnEmployee = connection.query( sql, params, ( err, newEmployeeResult ) => {
          if ( err ) {
             console.error( err );
             reject( err );

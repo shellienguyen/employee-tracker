@@ -219,6 +219,73 @@ const addARole = async () => {
 };
 
 
+const addANewEmployee = async () => {
+   // Get the list of managers for the user to assign the new employee to a manager
+   const allManagers = await viewAllManagers();
+
+   // Display the list of managers
+   const showAllManagers = await showListOfManagers( allManagers );
+
+   // Get the list of roles for the user to choose which role the new employee holds
+   const allRoles = await viewAllRoles();
+
+   // Display the list of roles
+   const showAllRoles = await showListOfRoles( allRoles );
+
+   const addEmployeePrompts = [
+      {
+         type: 'input',
+         name: 'newEmployeeFirstName',
+         message: `Input the new employee's first name:`,
+         validate: newEmployeeFirstNameInput => {
+            if ( newEmployeeFirstNameInput && newEmployeeFirstNameInput.trim().length > 0 ) {
+               return true;
+            }
+            else {
+               console.log( `Input the new employee's first name:` );
+               return false;
+            };
+         }
+      },
+      {
+         type: 'input',
+         name: 'newEmployeeLastName',
+         message: `Input the new employee's last name:`,
+         validate: newEmployeeLastNameInput => {
+            if ( newEmployeeLastNameInput && newEmployeeLastNameInput.trim().length > 0 ) {
+               return true;
+            }
+            else {
+               console.log( `Input the new employee's last name:` );
+               return false;
+            };
+         }
+      },
+      {
+         type: 'list',
+         name: 'managerId',
+         message: `Choose the new employee's manager:`,
+         choices: showAllManagers
+      },
+      {
+         type: 'list',
+         name: 'roleId',
+         message: `Choose the new employee's role:`,
+         choices: showAllRoles
+      }
+   ];
+
+   const newEmployeeObj = await inquirer.prompt( addEmployeePrompts );
+   addAnEmployee( newEmployeeObj );
+
+   console.log( '***************************************************' );
+   console.log( '* The new employee has been added to the database *' );
+   console.log( '***************************************************' );
+
+   return baseOptionsPrompts();
+};
+
+
 const addDataMenuOptions = async () => {
 
    const { addMenuOptions: addDataOptionSelected } = await inquirer.prompt( addDataMenuPrompts );
@@ -231,6 +298,7 @@ const addDataMenuOptions = async () => {
          addARole();
          break;
       case 'Add an Employee':
+         addANewEmployee();
          break;
       default:
          break;

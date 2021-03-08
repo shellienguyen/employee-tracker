@@ -156,7 +156,7 @@ const calcDepartmentBudget = ( departmentId ) => {
 // ADd a new department to the department table.
 const addDepartment = ( departmentId ) => {
    return new Promise(( resolve, reject ) => {
-      const sql = `INSERT INTO department ( name ) VALUEs( ? )`;
+      const sql = `INSERT INTO department ( name ) VALUES( ? )`;
       const queryAddDepartment = connection.query( sql, [ departmentId ], ( err, addResult ) => {
          if ( err ) {
             console.error( err );
@@ -173,8 +173,10 @@ const addDepartment = ( departmentId ) => {
 // Add a new role to the role table
 const addNewRole = ( newRoleToAdd ) => {
    return new Promise(( resolve, reject ) => {
-      const sql = `INSERT INTO role set ?`;
-      const queryAddNewRole = connection.query( sql, [ newRoleToAdd ], ( err, newRoleResult ) => {
+      const sql = `INSERT INTO role ( title, salary, departmentId )
+                   VALUES ( ?, ?, ? )`;
+      const params = [ newRoleToAdd.newRoleTitle, newRoleToAdd.newRoleSalary, newRoleToAdd.newRoleDepartment ];
+      const queryAddNewRole = connection.query( sql, params, ( err, newRoleResult ) => {
          if ( err ) {
             console.error( err );
             reject( err );

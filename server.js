@@ -4,7 +4,6 @@ const inquirer = require('inquirer');
 const mySqlConnection = require( './db/db-connection' );
 const app = express();
 const morganLogger = require( 'morgan' );
-//const consTable = require( 'console.table' );
 
 // Import query functions
 const {
@@ -154,8 +153,66 @@ const addADepartment = async () => {
 
    addDepartment( newDepartmentToAdd );
 
+   console.log( '*****************************************************' );
+   console.log( '* The new department has been added to the database *' );
+   console.log( '*****************************************************' );
+
+   return baseOptionsPrompts();
+};
+
+
+const addARole = async () => {
+   // Get the list of departments for the user to choose which department to add the role to
+   const allDeparments = await viewAllDepartments();
+
+   // Display the list of departments
+   const showAllDepartments = await showListOfDepartments( allDeparments );
+
+   const addRolePrompts = [
+      {
+         type: 'input',
+         name: 'newRoleTitle',
+         message: 'Input the new role title:',
+         validate: newRoleTitleInput => {
+            if ( newRoleTitleInput && newRoleTitleInput.trim().length > 0 ) {
+               return true;
+            }
+            else {
+               console.log( `Input the new role title:` );
+               return false;
+            };
+         }
+      },
+      {
+         type: 'input',
+         name: 'newRoleSalary',
+         message: 'Input the salary for the new role (numbers only):',
+         type: 'input',
+         validate: newRoleSalaryInput => {
+            if ( newRoleSalaryInput
+                 && newRoleSalaryInput.trim().length > 0
+                 && ( !isNaN( newRoleSalaryInput ))) {
+               return true;
+            }
+            else {
+               console.log( `Input the salary for the new role (numbers only):` );
+               return false;
+            };
+         }
+      },
+      {
+         type: 'list',
+         name: 'newRoleDepartment',
+         message: 'Choose the department for this new role: ',
+         choices: showAllDepartments
+      }
+   ]
+
+   const newRoleObj = await inquirer.prompt( addRolePrompts );
+   addNewRole( newRoleObj );
+
    console.log( '***********************************************' );
-   console.log( '* The new department is added to the database *' );
+   console.log( '* The new role has been added to the database *' );
    console.log( '***********************************************' );
 
    return baseOptionsPrompts();
@@ -171,6 +228,7 @@ const addDataMenuOptions = async () => {
          addADepartment();
          break;
       case 'Add a Role':
+         addARole();
          break;
       case 'Add an Employee':
          break;
@@ -187,10 +245,9 @@ const baseOptionsPrompts = async () => {
       case 'View Department Data':
          departmentMenuOptions();
          break;
-      case 'View All Roles':
+      case 'View Role Data':
          const showAllRoles = await viewAllRoles();
          console.table( showAllRoles );
-
          return baseOptionsPrompts();
       case 'View Employee Data':
          employeeMenuOptions();

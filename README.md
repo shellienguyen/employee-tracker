@@ -1,6 +1,6 @@
 # employee-tracker
 
-## Description
+## Description:
 The purpose of this Employee Tracker application is to allow users to be able to view and manage the departments, roles, and employees in a company
 to help the company organize and plan their business.  The application runs at the command prompt and when executed it will take the user through a
 series of command prompt questions where the user has the option to:
@@ -33,12 +33,12 @@ Code, type in "npm install" to install the node modules.
     - MYSQL_PASSWORD={MySQL Password}
     - MYSQL_DATABASE=employeesDB
 
-### Instuctional Video
+### Instuctional Video:
 
 For a demonstration on how to run this application, please watch this video: https://drive.google.com/file/d/1stea6rHOVTR9vrOTCKJBducrGoozp06e/view
 
 
-### Sample Screenshots of How the Application Works
+### Sample Screenshots of How the Application Works:
 
 ![Mockup](https://github.com/shellienguyen/employee-tracker/blob/main/src/images/employee-tracker1.jpg)
 <br><br>

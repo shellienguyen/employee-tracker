@@ -28,7 +28,7 @@ You will need to install dependencies before executing the application.
 6. Open the project in Visul Studio Code and open the "Integrated Terminal.  At the integrated command line inside Visual Studio
 Code, type in "npm install" to install the node modules.
 7. Then at the command line, type in "npm express inquirer mysql2" to install the rest of the dependencies.
-8. Creat a ".env" file at the root directory with the following variables (NOTE: you must replace the info in the brackets with your MySQL username and passwords and remove the brackets):
+8. Creat a ".env" file at the root directory with the following variables (NOTE: you must replace the info in the brackets with your MySQL username and password and remove the brackets):
     - MYSQL_USERNAME={MySQL username}
     - MYSQL_PASSWORD={MySQL Password}
     - MYSQL_DATABASE=employeesDB

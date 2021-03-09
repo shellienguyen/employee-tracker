@@ -40,8 +40,6 @@ For a demonstration on how to run this application, please watch this video: htt
 
 ### Sample Screenshots of How the Application Works
 
-Below are screenshots of the test output terminal, the user-input questions, and the HTML output for your reference:
-
 ![Mockup](https://github.com/shellienguyen/employee-tracker/blob/main/src/images/employee-tracker1.jpg)
 <br><br>
 ![Mockup](https://github.com/shellienguyen/employee-tracker/blob/main/src/images/employee-tracker2.jpg)

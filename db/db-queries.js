@@ -297,6 +297,24 @@ const deleteDepartment = ( departmentId ) => {
 };
 
 
+const getListOfEmployees = () => {
+   return new Promise(( resolve, reject ) => {
+      const sql = `SELECT id,
+                          CONCAT ( firstName, ' ', lastName ) AS name
+                   FROM employees`;
+      const queryListOfEmployees = connection.query( sql, ( err, listOfEmployeesResult) => {
+         if ( err ) {
+            console.error( err );
+            reject( err );
+            return;
+         };
+
+         resolve( listOfEmployeesResult );
+      });
+   });
+};
+
+
  module.exports = {
    viewAllEmployees,
    viewAllRoles,
@@ -313,4 +331,5 @@ const deleteDepartment = ( departmentId ) => {
    deleteAnEmployee,
    deleteARole,
    deleteDepartment,
+   getListOfEmployees
  };

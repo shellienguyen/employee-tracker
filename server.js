@@ -21,7 +21,8 @@ const {
    updateEmployeeManager,
    deleteAnEmployee,
    deleteARole,
-   deleteDepartment
+   deleteDepartment,
+   getListOfEmployees
  } = require ( './db/db-queries' );
 
 // Import prompts
@@ -30,25 +31,25 @@ const {
    addDataMenuPrompts
  } = require( './lib/base-menu-prompts' );
 
-const employeeMenuPrompts = require( './lib/employee-menu-prompts' );
+const {
+   employeeMenuPrompts,
+   updateMenuPrompts,
+   showListOfEmployees
+} = require( './lib/employee-menu-prompts' );
 
 const {
    showListOfRoles,
    showListOfManagers
- } = require( './lib/role-menu-prompts' );
+} = require( './lib/role-menu-prompts' );
 
 const {
    departmentMenuPrompts,
    addADepartmentPrompts,
    showListOfDepartments
- } = require( './lib/department-menu-prompts' );
+} = require( './lib/department-menu-prompts' );
  
 const { async } = require('rxjs');
  
-// Setup Express middleware to json parse and urlendoded for POST requests.
-// app.use( express.urlencoded({ extended: false }));
-// app.use( express.json());
-
 // Setup morgan middleware to log HTTP requests and errors.
 app.use( morganLogger( 'dev' ));
 
@@ -286,6 +287,86 @@ const addANewEmployee = async () => {
 };
 
 
+const updateAnEmployeeRole = async () => {
+   // Get list of employees for the user to choose from.
+   const allEmployees = await getListOfEmployees();
+   const showAllEmployees = await showListOfEmployees( allEmployees );
+
+   const employeeListPrompt = [
+      {
+         type: 'list',
+         name: 'employeeToUpdate',
+         message: `Choose an Employee:`,
+         choices: showAllEmployees
+      }
+   ];
+
+   const { employeeToUpdate: employeeOptionSelected } = await inquirer.prompt( employeeListPrompt );
+
+   // Get list of roles for the user to choose from
+   const allRoles = await viewAllRoles()
+   const showAllRoles = await showListOfRoles( allRoles );
+
+   const rolesPrompt = [
+      {
+         type: 'list',
+         name: 'newRole',
+         message: `Choose the New Role:`,
+         choices: showAllRoles
+      }
+   ];
+
+   const { newRole: roleOptionSelected } = await inquirer.prompt( rolesPrompt );
+   updateEmployeeRole( roleOptionSelected, employeeOptionSelected );
+
+   console.log( `************************************` );
+   console.log( `* Employee's role has been updated *` );
+   console.log( `************************************` );
+
+   return baseOptionsPrompts();
+};
+
+
+const updateAnEmployeeManager = async () => {
+   // Get list of employees for the user to choose from.
+   const allEmployees = await getListOfEmployees();
+   const showAllEmployees = await showListOfEmployees( allEmployees );
+
+   const employeeListPrompt = [
+      {
+         type: 'list',
+         name: 'employeeToUpdate',
+         message: `Choose an Employee:`,
+         choices: showAllEmployees
+      }
+   ];
+
+   const { employeeToUpdate: employeeOptionSelected } = await inquirer.prompt( employeeListPrompt );
+
+   // Get list of managers for the user to choose from
+   const allManagers = await viewAllManagers()
+   const showAllManagers = await showListOfManagers( allManagers );
+
+   const managersPrompt = [
+      {
+         type: 'list',
+         name: 'newManager',
+         message: `Choose the New Manager:`,
+         choices: showAllManagers
+      }
+   ];
+
+   const { newManager: managerOptionSelected } = await inquirer.prompt( managersPrompt );
+   updateEmployeeManager( managerOptionSelected, employeeOptionSelected );
+
+   console.log( `***************************************` );
+   console.log( `* Employee's manager has been updated *` );
+   console.log( `***************************************` );
+
+   return baseOptionsPrompts();
+};
+
+
 const addDataMenuOptions = async () => {
 
    const { addMenuOptions: addDataOptionSelected } = await inquirer.prompt( addDataMenuPrompts );
@@ -302,6 +383,22 @@ const addDataMenuOptions = async () => {
          break;
       default:
          break;
+   };
+};
+
+
+const updateMenuOptions = async () => {
+   const { updateMenuOptions: updateOptionSelected } = await inquirer.prompt( updateMenuPrompts );
+
+   switch ( updateOptionSelected ) {
+      case 'Update Employee Role':
+         updateAnEmployeeRole();
+         break;
+      case 'Update Employee Manager':
+         updateAnEmployeeManager();
+         break;
+      default:
+         return;
    };
 };
 
@@ -323,7 +420,8 @@ const baseOptionsPrompts = async () => {
       case 'Add Data':
          addDataMenuOptions();
          break;
-      case 'Update an Employee Role':
+      case 'Update Data':
+         updateMenuOptions();
          break;
       case '** Exit **':
          mySqlConnection.end();

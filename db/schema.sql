@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS department;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS employees;
 
+/******************************************************************************/
 
 CREATE TABLE department (
    id INTEGER AUTO_INCREMENT NOT NULL,
@@ -13,6 +14,7 @@ CREATE TABLE department (
    PRIMARY KEY ( id )
 );
 
+/******************************************************************************/
 
 CREATE TABLE role (
    id INTEGER AUTO_INCREMENT NOT NULL,
@@ -23,6 +25,7 @@ CREATE TABLE role (
    CONSTRAINT fk_department FOREIGN KEY( departmentId ) REFERENCES department ( id ) ON DELETE SET NULL
 );
 
+/******************************************************************************/
 
 CREATE TABLE employees (
    id INTEGER AUTO_INCREMENT NOT NULL,
@@ -34,3 +37,5 @@ CREATE TABLE employees (
    CONSTRAINT fk_role FOREIGN KEY( roleId ) REFERENCES role ( id ) ON DELETE SET NULL,
    CONSTRAINT fk_manager FOREIGN KEY( managerId ) REFERENCES role ( id ) ON DELETE SET NULL
 );
+
+/******************************************************************************/

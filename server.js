@@ -58,8 +58,12 @@ app.use( morganLogger( 'dev' ));
 ////////////////////////////////////////////////////////////////////////////////
 
 
+// View the sum of all employee salaries for a single department.
 const viewADepartmentBudget = async () => {
+   // Query the list of departments from db
    const showAllDepartments = await viewAllDepartments();
+
+   // Put the list of departments in an object.
    const listOfDepartments = await showListOfDepartments( showAllDepartments );
 
    let departmentListPrompt = [
@@ -71,7 +75,10 @@ const viewADepartmentBudget = async () => {
       }
    ];
 
+   // Prompt the user to choose a department.
    const { departmentListOptions: departmentOptionSelected } = await inquirer.prompt( departmentListPrompt );
+   
+   // Query the sum of salaries from db.
    const departmentBudget = await calcDepartmentBudget( departmentOptionSelected );
 
    console.table( departmentBudget );
@@ -79,7 +86,9 @@ const viewADepartmentBudget = async () => {
 };
 
 
+// Options whether to view list of departments or view department's total salary.
 const departmentMenuOptions = async () => {
+   // Prompt the user to choose an option.
    const { departmentMenuOptions: departmentOptionSelected } = await inquirer.prompt( departmentMenuPrompts );
 
    switch ( departmentOptionSelected ) {
@@ -90,14 +99,13 @@ const departmentMenuOptions = async () => {
          return baseOptionsPrompts();
       case 'View Department Budget':
          viewADepartmentBudget();
-      default:
-         return;
    };
 };
 
 
+// User has the options to view all employees, view employees by role, or view employees by manager.
 const employeeMenuOptions = async () => {
-   
+   // Prompt the user to choose an option.
    const { employeeMenuOptions: employeeOptionSelected } = await inquirer.prompt( employeeMenuPrompts );
 
    switch( employeeOptionSelected ) {
@@ -107,7 +115,10 @@ const employeeMenuOptions = async () => {
 
          return baseOptionsPrompts();
       case 'View Employees by Role':
+         // Query the db for the list of roles.
          const showAllRoles = await viewAllRoles();
+
+         // Put the list of roles in an object.
          const listOfRoles = await showListOfRoles( showAllRoles );
 
          let roleListPrompt = [
@@ -119,14 +130,20 @@ const employeeMenuOptions = async () => {
             }
          ];
 
+         // Prompt the user to choose a role.
          const { roleListOption: roleOptionSelected } = await inquirer.prompt( roleListPrompt );
+         
+         // Retrieve list of employees based on the selected role.
          const showEmployeesByRole = await viewEmployeesByRole(  roleOptionSelected );
 
          console.table( showEmployeesByRole );
 
          return baseOptionsPrompts();
       case 'View Employees by Manager':
+         // Query the db for the list of managers.
          const showAllManagers = await viewAllManagers();
+
+         // Put the list of managers in an object.
          const listOfManagers = await showListOfManagers( showAllManagers );
 
          let managerListPrompt = [
@@ -138,18 +155,20 @@ const employeeMenuOptions = async () => {
             }
          ];
 
+         // Prompt the user to choose a manager.
          const { managerListOption: managerOptionSelected } = await inquirer.prompt( managerListPrompt );
+         
+         // Retrieve list of employees based on the selected manager.
          const showEmployeesByManager = await viewEmployeesByManager(  managerOptionSelected );
 
          console.table( showEmployeesByManager );
 
          return baseOptionsPrompts();
-      default:
-         return;
    };
 };
 
 
+// Add a new department.
 const addADepartment = async () => {
    const {newDepartmentName: newDepartmentToAdd } = await inquirer.prompt( addADepartmentPrompts );
 
@@ -163,11 +182,12 @@ const addADepartment = async () => {
 };
 
 
+// Add a new role
 const addARole = async () => {
-   // Get the list of departments for the user to choose which department to add the role to
+   // Query the db for a list of departments to assign the new role to.
    const allDeparments = await viewAllDepartments();
 
-   // Display the list of departments
+   // Put the list of departments in object
    const showAllDepartments = await showListOfDepartments( allDeparments );
 
    const addRolePrompts = [
@@ -210,7 +230,10 @@ const addARole = async () => {
       }
    ]
 
+   // Prompt the user for the info pertaining to the new role.
    const newRoleObj = await inquirer.prompt( addRolePrompts );
+
+   // Add the new role to the db.
    addNewRole( newRoleObj );
 
    console.log( '********************************' );
@@ -221,17 +244,18 @@ const addARole = async () => {
 };
 
 
+// Add a new employee to the db.
 const addANewEmployee = async () => {
-   // Get the list of managers for the user to assign the new employee to a manager
+   // Query the db for the list of managers to assign the new employee to.
    const allManagers = await viewAllManagers();
 
-   // Display the list of managers
+   // Put the list of managers in an object.
    const showAllManagers = await showListOfManagers( allManagers );
 
-   // Get the list of roles for the user to choose which role the new employee holds
+   // Query the db for the list of roles to assign the new employee to.
    const allRoles = await viewAllRoles();
 
-   // Display the list of roles
+   // Put the list of roles in an object.
    const showAllRoles = await showListOfRoles( allRoles );
 
    const addEmployeePrompts = [
@@ -277,7 +301,10 @@ const addANewEmployee = async () => {
       }
    ];
 
+   // Prompt the user for the info pertaining to the new employee.
    const newEmployeeObj = await inquirer.prompt( addEmployeePrompts );
+
+   // Add the new employee to the db.
    addAnEmployee( newEmployeeObj );
 
    console.log( '************************************' );
@@ -288,9 +315,12 @@ const addANewEmployee = async () => {
 };
 
 
+// Re-assign the employee to a different role.
 const updateAnEmployeeRole = async () => {
-   // Get list of employees for the user to choose from.
+   // Query the db for the list of employees for the user to choose from.
    const allEmployees = await getListOfEmployees();
+
+   // Put the list of employees in an object.
    const showAllEmployees = await showListOfEmployees( allEmployees );
 
    const employeeListPrompt = [
@@ -302,10 +332,13 @@ const updateAnEmployeeRole = async () => {
       }
    ];
 
+   // Prompt the user to choose the employee.
    const { employeeToUpdate: employeeOptionSelected } = await inquirer.prompt( employeeListPrompt );
 
-   // Get list of roles for the user to choose from
+   // Query the db for the list of roles for the user to choose from.
    const allRoles = await viewAllRoles()
+
+   // Put the list of roles in an object.
    const showAllRoles = await showListOfRoles( allRoles );
 
    const rolesPrompt = [
@@ -317,7 +350,10 @@ const updateAnEmployeeRole = async () => {
       }
    ];
 
+   // Prompt the user to choose a role to re-assign the  employee to.
    const { newRole: roleOptionSelected } = await inquirer.prompt( rolesPrompt );
+
+   // Update the employee's role.
    updateEmployeeRole( roleOptionSelected, employeeOptionSelected );
 
    console.log( `*************************************` );
@@ -328,9 +364,12 @@ const updateAnEmployeeRole = async () => {
 };
 
 
+// Re-assign the employee to a different manager.
 const updateAnEmployeeManager = async () => {
-   // Get list of employees for the user to choose from.
+   // Query the db for the list of employees for the user to choose from.
    const allEmployees = await getListOfEmployees();
+
+   // Put the list of employees in an object.
    const showAllEmployees = await showListOfEmployees( allEmployees );
 
    const employeeListPrompt = [
@@ -342,10 +381,13 @@ const updateAnEmployeeManager = async () => {
       }
    ];
 
+   // Prompt the user to choose the employee.
    const { employeeToUpdate: employeeOptionSelected } = await inquirer.prompt( employeeListPrompt );
 
-   // Get list of managers for the user to choose from
+   // Query the db for the list of managers for the user to choose from.
    const allManagers = await viewAllManagers()
+
+   // Put the list of mangers in an object.
    const showAllManagers = await showListOfManagers( allManagers );
 
    const managersPrompt = [
@@ -357,7 +399,10 @@ const updateAnEmployeeManager = async () => {
       }
    ];
 
+   // Prompt the user to choose a manager to re-assign the employee to.
    const { newManager: managerOptionSelected } = await inquirer.prompt( managersPrompt );
+
+   // Update the employee's manager.
    updateEmployeeManager( managerOptionSelected, employeeOptionSelected );
 
    console.log( `****************************************` );
@@ -368,9 +413,13 @@ const updateAnEmployeeManager = async () => {
 };
 
 
+// Delete a department from the db.
 const deleteADepartment = async () => {
-   // Get list of departments for the user to choose from.
+
+   // Query the db for the list of departments for the user to choose from.
    const allDepartments = await viewAllDepartments();
+
+   // Put the list of departments in an object.
    const showAllDepartments = await showListOfDepartments( allDepartments );
 
    const departmentListPrompt = [
@@ -382,7 +431,10 @@ const deleteADepartment = async () => {
       }
    ];
 
+   // Prompt the user to chooe a department to remove.
    const { departmentToDelete: departmentOptionSelected } = await inquirer.prompt( departmentListPrompt );
+   
+   // Delete the selected department from the db.
    deleteDepartment( departmentOptionSelected );
 
    console.log( `************************************` );
@@ -393,9 +445,12 @@ const deleteADepartment = async () => {
 };
 
 
+// Delete a role from the db.
 const deleteARole = async () => {
-   // Get list of roles for the user to choose from.
+   // Query the db for the list of roles for the user to choose from.
    const allRoles = await viewAllRoles();
+
+   // Put the list of roles in an object.
    const showAllRoles = await showListOfRoles( allRoles );
 
    const roleListPrompt = [
@@ -407,7 +462,10 @@ const deleteARole = async () => {
       }
    ];
 
+   // Prompt the user to choose a role to remove.
    const { roleToDelete: roleOptionSelected } = await inquirer.prompt( roleListPrompt );
+
+   // Delete the selected role from the db.
    deleteRole( roleOptionSelected );
 
    console.log( `******************************` );
@@ -418,9 +476,12 @@ const deleteARole = async () => {
 };
 
 
+// Delete an employee from the db.
 const deleteAnEmployee = async () => {
-   // Get list of employees for the user to choose from.
+   // Query the db for the list of employees for the user to choose from.
    const allEmployees = await getListOfEmployees();
+
+   // Put the list of employees in an object.
    const showAllEmployees = await showListOfEmployees( allEmployees );
 
    const employeeListPrompt = [
@@ -432,7 +493,10 @@ const deleteAnEmployee = async () => {
       }
    ];
 
+   // Prompt the user to choose an employee to remove.
    const { employeeToDelete: employeeOptionSelected } = await inquirer.prompt( employeeListPrompt );
+
+   // Delete the employee from the db.
    deleteEmployee( employeeOptionSelected );
 
    console.log( `**********************************` );
@@ -456,8 +520,6 @@ const deleteMenuOptions = async () => {
       case 'Delete a Deparment':
          deleteADepartment();
          break;
-      default:
-         break;
    };
 };
 
@@ -475,8 +537,6 @@ const addDataMenuOptions = async () => {
       case 'Add an Employee':
          addANewEmployee();
          break;
-      default:
-         break;
    };
 };
 
@@ -491,8 +551,6 @@ const updateMenuOptions = async () => {
       case 'Update Employee Manager':
          updateAnEmployeeManager();
          break;
-      default:
-         return;
    };
 };
 
@@ -521,9 +579,6 @@ const baseOptionsPrompts = async () => {
          deleteMenuOptions();
          break;
       case '** Exit **':
-         mySqlConnection.end();
-         break;
-      default:
          mySqlConnection.end();
          break;
    };

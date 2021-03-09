@@ -6,7 +6,7 @@ const connection = require( './db-connection' );
 ////////////////////////////////////////////////////////////////////////////////
 
 
-// View data for all of  the company employees listed in the database.
+// Retrieve data for all of  the company employees listed in the database.
 const viewAllEmployees = () => {
    return new Promise(( resolve, reject ) => {
       // Self-join the employees table for hierarchical data, to get the manager name.
@@ -30,7 +30,7 @@ const viewAllEmployees = () => {
 };
 
 
-// View data for all of the available company roles.
+// Retrieve data for all of the available company roles.
 const viewAllRoles = () => {
    return new Promise(( resolve, reject ) => {
       const sql = `SELECT * FROM role`;
@@ -47,7 +47,7 @@ const viewAllRoles = () => {
 };
 
 
-// View data for all employees based on a user-selected role.
+// Retrieve data for all employees based on a user-selected role.
 const viewEmployeesByRole = ( roleToView ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `SELECT e1.id, e1.firstName, e1.lastName, role.title,
@@ -71,7 +71,7 @@ const viewEmployeesByRole = ( roleToView ) => {
 };
 
 
-// View data for all of the available company managers.
+// Retrieve data for all of the available company managers.
 const viewAllManagers = () => {
    return new Promise(( resolve, reject ) => {
       const sql = `SELECT DISTINCT m1.id, CONCAT ( m1.firstName, ' ', m1.lastName) AS manager
@@ -92,7 +92,7 @@ const viewAllManagers = () => {
 };
 
 
-// View data for all employees based on a user-selected manager.
+// Retrieve data for all employees based on a user-selected manager.
 const viewEmployeesByManager = ( managerToView ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `SELECT e1.id, e1.firstName, e1.lastName, role.title,
@@ -116,7 +116,7 @@ const viewEmployeesByManager = ( managerToView ) => {
 };
 
 
-// View all departments
+// Retrieve the list of all departments.
 const viewAllDepartments = () => {
    return new Promise(( resolve, reject ) => {
       sql = `SELECT * FROM department`;
@@ -133,6 +133,7 @@ const viewAllDepartments = () => {
 };
 
 
+// Retrieve the sum of all salaries for a single department.
 const calcDepartmentBudget = ( departmentId ) => {
    return new Promise(( resolve, reject ) => {
       sql = `SELECT SUM( role.salary ) AS departmentSalarySum
@@ -170,7 +171,7 @@ const addDepartment = ( departmentId ) => {
 };
 
 
-// Add a new role to the role table
+// Add a new role to the role table.
 const addNewRole = ( newRoleToAdd ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `INSERT INTO role ( title, salary, departmentId )
@@ -191,7 +192,7 @@ const addNewRole = ( newRoleToAdd ) => {
 };
 
 
-// Add a new employee to the database.
+// Add a new employee to the employee table.
 const addAnEmployee = ( employeeToAdd ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `INSERT INTO employees ( firstName, lastName, roleId, ManagerId )
@@ -213,7 +214,7 @@ const addAnEmployee = ( employeeToAdd ) => {
 };
 
 
-// Update an employee's role
+// Update an employee's role.
 const updateEmployeeRole = ( roleToUpdate, employeeToUpdate ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `UPDATE employees SET roleId = ? WHERE id = ?`;
@@ -230,7 +231,7 @@ const updateEmployeeRole = ( roleToUpdate, employeeToUpdate ) => {
 };
 
 
-// Update an employee's manager
+// Update an employee's manager.
 const updateEmployeeManager = ( managerToUpdate, employeeToUpdate ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `UPDATE employees SET managerId = ? WHERE id = ?`;
@@ -247,7 +248,7 @@ const updateEmployeeManager = ( managerToUpdate, employeeToUpdate ) => {
 };
 
 
-// Delete an employee from the database.
+// Delete an employee from the employee table.
 const deleteEmployee = ( id ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `DELETE FROM employees WHERE id = ?`;
@@ -297,6 +298,7 @@ const deleteDepartment = ( departmentId ) => {
 };
 
 
+// Retrieve the list of all employees.
 const getListOfEmployees = () => {
    return new Promise(( resolve, reject ) => {
       const sql = `SELECT id,

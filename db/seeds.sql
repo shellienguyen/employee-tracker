@@ -5,50 +5,50 @@ USE employeesDB;
 INSERT INTO department
    ( name )
 VALUES
-   ( 'Engineering' ), -- id = 1
-   ( 'Business Development' ), -- id = 2
-   ( 'Finance' ), -- id = 3
-   ( 'HR' ), -- id = 4
-   ( 'Sales' ), -- id = 5
-   ( 'Marketing' ), -- id = 6
-   ( 'Public Relations' ), -- id = 7
-   ( 'Business Logistics' ), -- id = 8
-   ( 'Events Planning'), -- id = 9
-   ( 'Legal' ), -- id = 10
-   ( 'Admin' ); -- id = 11
+   ( 'Engineering' ), /* id = 1 */
+   ( 'Business Development' ), /* id = 2 */
+   ( 'Finance' ), /* id = 3 */
+   ( 'HR' ), /* id = 4 */
+   ( 'Sales' ), /* id = 5 */
+   ( 'Marketing' ), /* id = 6 */
+   ( 'Public Relations' ), /* id = 7 */
+   ( 'Business Logistics' ), /* id = 8 */
+   ( 'Events Planning'), /* id = 9 */
+   ( 'Legal' ), /* id = 10 */
+   ( 'Admin' ); /* id = 11 */
 
 /******************************************************************************/
 
 INSERT INTO role
    ( title, salary, departmentId )
 VALUES
-   ( 'Engineering Manager', 150000, 1 ), -- roleId = 1
-   ( 'Senior Engineer', 125000, 1 ), -- roleId = 2
-   ( 'Engineer', 110000, 1 ), -- roleId = 3
-   ( 'Junior Engineer', 70000, 1 ), -- roleId = 4
-   ( 'Electrial Technologist', 90000, 1 ), -- roleId = 5
-   ( 'Strategic Partnerships Manager', 105000, 2 ), -- roleId = 6
-   ( 'Strategic Alliance Specialist', 85000, 2 ), -- roleId = 7
-   ( 'Finance Head', 120000, 3 ), -- roleId = 8
-   ( 'Budget Analyst', 90000, 3 ), -- roleId = 9
-   ( 'Auditor', 110000, 3 ), -- roleId = 10
-   ( 'HR Manager', 125000, 4 ), -- roleId = 11
-   ( 'HR Associate', 65000, 4 ), -- roleId = 12
-   ( 'Account Executive', 150000, 5 ), -- roleId = 13
-   ( 'Sales Consultant', 90000, 5 ), -- roleId = 14
-   ( 'Chief Marketing Officer', 150000, 6 ), -- roleId = 15
-   ( 'Marketing Consultant', 90000, 6 ), -- roleId = 16
-   ( 'Marketing Associate', 65000, 6 ), -- roleId = 17
-   ( 'Brand Ambassador', 300000, 7 ), -- roleId = 18
-   ( 'Director of Logistics', 210000, 8 ), -- roleId = 19
-   ( 'Warehousing Logistics', 120000, 8 ), -- roleId = 20
-   ( 'Events Coordinator', 90000, 9 ), -- roleId = 21
-   ( 'Lead Legal Advisor', 300000, 10 ), -- roleId = 22
-   ( 'Legal Advisor', 210000, 10 ), -- roleId = 23
-   ( 'Vice President', 50000, 11 ), -- roldId = 24
-   ( 'Receptionist', 40000, 11 ), -- roleId = 25
-   ( 'Department Secretary', 60000, 11 ), -- roleId = 26
-   ( 'Executive Secretary', 90000, 11 ); -- roleId = 27
+   ( 'Engineering Manager', 150000, 1 ), /* roleId = 1 */
+   ( 'Senior Engineer', 125000, 1 ), /* roleId = 2 */
+   ( 'Engineer', 110000, 1 ), /* roleId = 3 */
+   ( 'Junior Engineer', 70000, 1 ), /* roleId = 4 */
+   ( 'Electrial Technologist', 90000, 1 ), /* roleId = 5 */
+   ( 'Strategic Partnerships Manager', 105000, 2 ), /* roleId = 6 */
+   ( 'Strategic Alliance Specialist', 85000, 2 ), /* roleId = 7 */
+   ( 'Finance Head', 120000, 3 ), /* roleId = 8 */
+   ( 'Budget Analyst', 90000, 3 ), /* roleId = 9 */
+   ( 'Auditor', 110000, 3 ), /* roleId = 10 */
+   ( 'HR Manager', 125000, 4 ), /* roleId = 11 */
+   ( 'HR Associate', 65000, 4 ), /* roleId = 12 */
+   ( 'Account Executive', 150000, 5 ), /* roleId = 13 */
+   ( 'Sales Consultant', 90000, 5 ), /* roleId = 14 */
+   ( 'Chief Marketing Officer', 150000, 6 ), /* roleId = 15 */
+   ( 'Marketing Consultant', 90000, 6 ), /* roleId = 16 */
+   ( 'Marketing Associate', 65000, 6 ), /* roleId = 17 */
+   ( 'Brand Ambassador', 300000, 7 ), /* roleId = 18 */
+   ( 'Director of Logistics', 210000, 8 ), /* roleId = 19 */
+   ( 'Warehousing Logistics', 120000, 8 ), /* roleId = 20 */
+   ( 'Events Coordinator', 90000, 9 ), /* roleId = 21 */
+   ( 'Lead Legal Advisor', 300000, 10 ), /* roleId = 22 */
+   ( 'Legal Advisor', 210000, 10 ), /* roleId = 23 */
+   ( 'Vice President', 50000, 11 ), /* roldId = 24 */
+   ( 'Receptionist', 40000, 11 ), /* roleId = 25 */
+   ( 'Department Secretary', 60000, 11 ), /* roleId = 26 */
+   ( 'Executive Secretary', 90000, 11 ); /* roleId = 27 */
 
 /******************************************************************************/
 

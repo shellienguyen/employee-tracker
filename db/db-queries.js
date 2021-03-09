@@ -248,7 +248,7 @@ const updateEmployeeManager = ( managerToUpdate, employeeToUpdate ) => {
 
 
 // Delete an employee from the database.
-const deleteAnEmployee = ( id ) => {
+const deleteEmployee = ( id ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `DELETE FROM employees WHERE id = ?`;
       const queryDeleteAnEmployee = connection.query( sql, [ id ], ( err, deleteResult ) => {
@@ -265,7 +265,7 @@ const deleteAnEmployee = ( id ) => {
 
 
 // Delete a role from the role table.
-const deleteARole = ( roleId ) => {
+const deleteRole = ( roleId ) => {
    return new Promise(( resolve, reject ) => {
       const sql = `DELETE FROM role WHERE id = ?`;
       const queryDeleteARole = connection.query( sql, [ roleId ], ( err, deleteRoleResult ) => {
@@ -328,8 +328,8 @@ const getListOfEmployees = () => {
    addAnEmployee,
    updateEmployeeRole,
    updateEmployeeManager,
-   deleteAnEmployee,
-   deleteARole,
+   deleteEmployee,
+   deleteRole,
    deleteDepartment,
    getListOfEmployees
  };

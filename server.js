@@ -19,8 +19,8 @@ const {
    addAnEmployee,
    updateEmployeeRole,
    updateEmployeeManager,
-   deleteAnEmployee,
-   deleteARole,
+   deleteEmployee,
+   deleteRole,
    deleteDepartment,
    getListOfEmployees
  } = require ( './db/db-queries' );
@@ -28,7 +28,8 @@ const {
 // Import prompts
 const {
    baseMenuPrompts,
-   addDataMenuPrompts
+   addDataMenuPrompts,
+   deleteDataMenuPrompts
  } = require( './lib/base-menu-prompts' );
 
 const {
@@ -154,9 +155,9 @@ const addADepartment = async () => {
 
    addDepartment( newDepartmentToAdd );
 
-   console.log( '*****************************************************' );
-   console.log( '* The new department has been added to the database *' );
-   console.log( '*****************************************************' );
+   console.log( '**************************************' );
+   console.log( '* The new department has been added. *' );
+   console.log( '**************************************' );
 
    return baseOptionsPrompts();
 };
@@ -212,9 +213,9 @@ const addARole = async () => {
    const newRoleObj = await inquirer.prompt( addRolePrompts );
    addNewRole( newRoleObj );
 
-   console.log( '***********************************************' );
-   console.log( '* The new role has been added to the database *' );
-   console.log( '***********************************************' );
+   console.log( '********************************' );
+   console.log( '* The new role has been added. *' );
+   console.log( '********************************' );
 
    return baseOptionsPrompts();
 };
@@ -279,9 +280,9 @@ const addANewEmployee = async () => {
    const newEmployeeObj = await inquirer.prompt( addEmployeePrompts );
    addAnEmployee( newEmployeeObj );
 
-   console.log( '***************************************************' );
-   console.log( '* The new employee has been added to the database *' );
-   console.log( '***************************************************' );
+   console.log( '************************************' );
+   console.log( '* The new employee has been added. *' );
+   console.log( '************************************' );
 
    return baseOptionsPrompts();
 };
@@ -319,9 +320,9 @@ const updateAnEmployeeRole = async () => {
    const { newRole: roleOptionSelected } = await inquirer.prompt( rolesPrompt );
    updateEmployeeRole( roleOptionSelected, employeeOptionSelected );
 
-   console.log( `************************************` );
-   console.log( `* Employee's role has been updated *` );
-   console.log( `************************************` );
+   console.log( `*************************************` );
+   console.log( `* Employee's role has been updated. *` );
+   console.log( `*************************************` );
 
    return baseOptionsPrompts();
 };
@@ -359,16 +360,109 @@ const updateAnEmployeeManager = async () => {
    const { newManager: managerOptionSelected } = await inquirer.prompt( managersPrompt );
    updateEmployeeManager( managerOptionSelected, employeeOptionSelected );
 
-   console.log( `***************************************` );
-   console.log( `* Employee's manager has been updated *` );
-   console.log( `***************************************` );
+   console.log( `****************************************` );
+   console.log( `* Employee's manager has been updated. *` );
+   console.log( `****************************************` );
 
    return baseOptionsPrompts();
 };
 
 
-const addDataMenuOptions = async () => {
+const deleteADepartment = async () => {
+   // Get list of departments for the user to choose from.
+   const allDepartments = await viewAllDepartments();
+   const showAllDepartments = await showListOfDepartments( allDepartments );
 
+   const departmentListPrompt = [
+      {
+         type: 'list',
+         name: 'departmentToDelete',
+         message: `Choose a Department:`,
+         choices: showAllDepartments
+      }
+   ];
+
+   const { departmentToDelete: departmentOptionSelected } = await inquirer.prompt( departmentListPrompt );
+   deleteDepartment( departmentOptionSelected );
+
+   console.log( `************************************` );
+   console.log( `* The department has been deleted. *` );
+   console.log( `************************************` );
+
+   return baseOptionsPrompts();
+};
+
+
+const deleteARole = async () => {
+   // Get list of roles for the user to choose from.
+   const allRoles = await viewAllRoles();
+   const showAllRoles = await showListOfRoles( allRoles );
+
+   const roleListPrompt = [
+      {
+         type: 'list',
+         name: 'roleToDelete',
+         message: `Choose a Role:`,
+         choices: showAllRoles
+      }
+   ];
+
+   const { roleToDelete: roleOptionSelected } = await inquirer.prompt( roleListPrompt );
+   deleteRole( roleOptionSelected );
+
+   console.log( `******************************` );
+   console.log( `* The role has been deleted. *` );
+   console.log( `******************************` );
+
+   return baseOptionsPrompts();
+};
+
+
+const deleteAnEmployee = async () => {
+   // Get list of employees for the user to choose from.
+   const allEmployees = await getListOfEmployees();
+   const showAllEmployees = await showListOfEmployees( allEmployees );
+
+   const employeeListPrompt = [
+      {
+         type: 'list',
+         name: 'employeeToDelete',
+         message: `Choose an Employee:`,
+         choices: showAllEmployees
+      }
+   ];
+
+   const { employeeToDelete: employeeOptionSelected } = await inquirer.prompt( employeeListPrompt );
+   deleteEmployee( employeeOptionSelected );
+
+   console.log( `**********************************` );
+   console.log( `* The employee has been deleted. *` );
+   console.log( `**********************************` );
+
+   return baseOptionsPrompts();
+};
+
+
+const deleteMenuOptions = async () => {
+   const { deleteMenuOptions: deleteDataOptionSelected } = await inquirer.prompt( deleteDataMenuPrompts );
+
+   switch( deleteDataOptionSelected ) {
+      case 'Delete an Employee':
+         deleteAnEmployee();
+         break;
+      case 'Delete a Role':
+         deleteARole();
+         break;
+      case 'Delete a Deparment':
+         deleteADepartment();
+         break;
+      default:
+         break;
+   };
+};
+
+
+const addDataMenuOptions = async () => {
    const { addMenuOptions: addDataOptionSelected } = await inquirer.prompt( addDataMenuPrompts );
 
    switch ( addDataOptionSelected ) {  
@@ -422,6 +516,9 @@ const baseOptionsPrompts = async () => {
          break;
       case 'Update Data':
          updateMenuOptions();
+         break;
+      case 'Delete Data':
+         deleteMenuOptions();
          break;
       case '** Exit **':
          mySqlConnection.end();

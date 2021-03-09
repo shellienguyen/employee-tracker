@@ -29,8 +29,8 @@ You will need to install dependencies before executing the application.
 Code, type in "npm install" to install the node modules.
 7. Then at the command line, type in "npm express inquirer mysql2" to install the rest of the dependencies.
 8. Creat a ".env" file at the root directory with the following variables (NOTE: you must replace the info in the brackets with your MySQL username and passwords:
-    - MYSQL_USERNAME=<MySQL username>
-    - MYSQL_PASSWORD=<MySQL Password>
+    - MYSQL_USERNAME={MySQL username}
+    - MYSQL_PASSWORD={MySQL Password}
     - MYSQL_DATABASE=employeesDB
 
 ### Instuctional Video
